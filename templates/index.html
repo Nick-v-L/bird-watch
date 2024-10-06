@@ -8,5 +8,11 @@
 <body>
     <h1>Bird Watch</h1>
     <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    <div>
+        <h2>Controls</h2>
+        <a href="{{ url_for('playback') }}">Playback Video</a>
+        <a href="{{ url_for('download_image') }}">Download Image</a>
+        <a href="{{ url_for('download_video') }}">Download Video</a>
+    </div>
 </body>
 </html>
