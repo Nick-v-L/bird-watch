@@ -23,7 +23,7 @@ jobs:
       run: |
         git clone https://github.com/RPi-Distro/pi-gen.git
         cd pi-gen
-        echo "IMG_NAME='rpi-camera-stream'" > config
+        echo "IMG_NAME='bird-watch'" > config
         mkdir -p stage3/01-custom
         echo "FROM scratch" > stage3/01-custom/Dockerfile
         echo "COPY . /home/pi/app" >> stage3/01-custom/Dockerfile
@@ -33,5 +33,5 @@ jobs:
     - name: Upload Image
       uses: actions/upload-artifact@v2
       with:
-        name: rpi-camera-stream.img
+        name: bird-watch.img
         path: deploy/*.img
