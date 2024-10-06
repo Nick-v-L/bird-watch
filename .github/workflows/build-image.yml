@@ -1,0 +1,37 @@
+name: Build Raspberry Pi Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Raspberry Pi Image
+      run: |
+        git clone https://github.com/RPi-Distro/pi-gen.git
+        cd pi-gen
+        echo "IMG_NAME='rpi-camera-stream'" > config
+        mkdir -p stage3/01-custom
+        echo "FROM scratch" > stage3/01-custom/Dockerfile
+        echo "COPY . /home/pi/app" >> stage3/01-custom/Dockerfile
+        echo "RUN echo '@reboot /usr/bin/python3 /home/pi/app/app.py' | crontab -" >> stage3/01-custom/Dockerfile
+        ./build-docker.sh
+
+    - name: Upload Image
+      uses: actions/upload-artifact@v2
+      with:
+        name: rpi-camera-stream.img
+        path: deploy/*.img
